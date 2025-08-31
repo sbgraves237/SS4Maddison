@@ -1,0 +1,21 @@
+Package: SS4Maddison
+Version: 0.0.0
+Date: 2025-08-30
+Title: State Space modeling using Maddison project data
+Authors@R: c(person(given = "Spencer",
+              family = "Graves",
+              role = c("aut", "cre"),
+              email = "spencer.graves@effectivedefense.org"))
+Author: Spencer Graves [aut, cre]
+Maintainer: Spencer Graves <spencer.graves@effectivedefense.org>
+Depends: R (>= 3.5.0)
+Suggests: knitr, rmarkdown, ipumsr, lubridate, readxl
+VignetteBuilder: knitr
+Imports: KFAS
+Description: Maddison project data in *.rda format with 
+    functions and vignettes to illustrate how to use KFAS
+    and other tools to model Maddison data. 
+License: GPL (>=2)
+Language: en-us
+URL: https://www.r-project.org
+NeedsCompilation: no
