@@ -1,9 +1,46 @@
-# SS4Maddison
-State Space modeling using Maddison project data
 
-Creator: Spencer Graves
-2025-09-02
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# SS4Maddison
 
 <!-- badges: start -->
-  [![R-CMD-check](https://github.com/sbgraves237/SS4Maddison/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sbgraves237/SS4Maddison/actions/workflows/R-CMD-check.yaml)
+
 <!-- badges: end -->
+
+State Space modeling using Maddison project data
+
+Objectives:
+
+1.  Build a state space / Kalman models for `gdppc` and `pop` for each
+    country in the Maddison project data.
+
+2.  Use Kalman smooth to interpolate and extrapolate (forward but not
+    backwards) `gdppc` and `pop` for each country for all years that
+    appear anywhere in the Maddison project data.
+
+3.  Identify the world leader in `gdppc` for each year.
+
+4.  Identify the world technology leader for each year by evaluating the
+    `gdppc` leader for each year and replacing any whose leadership was
+    narrow like members of OPEC with a country with a broad-based
+    economy like the US.
+
+## Installation
+
+You can install the development version of SS4Maddison from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("sbgraves237/SS4Maddison")
+```
+
+## Example
+
+\[Coming soon.\]
+<!--This is a basic example which shows you how to solve a common problem:-->
+
+``` r
+library(SS4Maddison)
+## basic example code
+```
