@@ -23,6 +23,8 @@ Description: Maddison project data in *.rda format with
     and other tools to model Maddison data. 
 License: GPL (>=2)
 Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
 Language: en-us
 URL: https://www.r-project.org
 NeedsCompilation: no
