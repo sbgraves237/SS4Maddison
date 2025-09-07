@@ -12,15 +12,14 @@ Authors@R: c(person(given = "Spencer",
 Author: Spencer Graves [aut, cre]
 Maintainer: Spencer Graves <spencer.graves@effectivedefense.org>
 BugReports: https://github.com/sbgraves237/SS4Maddison/issues
-Depends: R (>= 3.5.0)
+Depends: R (>= 3.5.0), devtools
 Suggests: 
     knitr,
     rmarkdown,
     ipumsr,
     lubridate,
     readxl,
-    testthat (>= 3.0.0),
-    devtools
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Imports: KFAS
 License: GPL (>=2)
