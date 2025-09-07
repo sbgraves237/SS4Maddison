@@ -11,6 +11,7 @@ Authors@R: c(person(given = "Spencer",
               email = "spencer.graves@effectivedefense.org"))
 Author: Spencer Graves [aut, cre]
 Maintainer: Spencer Graves <spencer.graves@effectivedefense.org>
+BugReports: https://github.com/sbgraves237/SS4Maddison/issues
 Depends: R (>= 3.5.0)
 Suggests: 
     knitr,
@@ -26,6 +27,6 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Language: en-us
-URL: https://www.r-project.org
+URL: https://www.r-project.org, https://github.com/sbgraves237/SS4Maddison
 NeedsCompilation: no
 Config/testthat/edition: 3
