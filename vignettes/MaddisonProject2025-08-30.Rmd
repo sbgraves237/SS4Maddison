@@ -1,0 +1,378 @@
+---
+title: "Economic history per the Maddison project"
+author: "Spencer Graves"
+date: "2025-08-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Intro 
+
+This vignette tries to estimate the rate of increase in real GDP per capita while identifying the technological leader, especially during and following violent revolutions and wars. 
+
+Key hypotheses: 
+- Economic growth of technology leaders is driven primary by freedom. 
+- Economic growth of technology followers is obtained from copying the technology leaders or by owning raw materials in high demand. 
+- Violent revolutions and war tend to impact negatively, both by destruction of infrastructure and by limiting advances in freedom. 
+
+Two violent revolutions in world history were followed by substantive economic growth of a technology leader: 
+- The English Civil War and the [Wars of the Three Kingdoms
+(1639-1653)](https://en.wikipedia.org/wiki/Wars_of_the_Three_Kingdoms).
+- The [American Revolution (1765-1783)](https://en.wikipedia.org/wiki/American_Revolution). 
+
+These hypotheses claim that other violent revolutions, win or lose, were followed by either economic stagnation or growth based on copying technology leader(s). 
+
+1. First create a `data.frame` of all the countries with the first and last year for which data are available for that country. 
+2. For each country, fit a two-dimensional state-space model of `(x, v)` = (level, velocity) to log(`GDPpc`) and interpolate for the entire range of available data using Kalman smoothing with the [`KFAS`](https://stat.ethz.ch/CRAN/web/packages/KFAS/index.html) package. 
+3. Identify the country with the highest `GDPpc` for each year. 
+4. Ask if the leader for each year is a broad technology leader or has a narrow economy like a petroleum leader in relatively recent times. If the latter, the country with the next highest `GDPpc` for that year and ask if that is a broad technology leader or has a narrow economy, and recurse on that if necessary until the broad technology leader is found for that year. 
+5. Consider refining the model for each of the broad technology leaders, e.g., by assuming that the velocity changes most between changes in heads of state.  
+6. Expand that to build models of all countries at once with the `v[t] = v[t-1] + b[t]*(xl[t-1] - x[t-1])`, where `xl` = the level for the technology leader, and `b` is another component of the state vector of each trailing country measuring the rate of learning from the technology leader. 
+
+## Maddison project  
+
+The Wikipedia article on the [Maddison Project](https://en.wikipedia.org/wiki/Maddison_Project) says, "Development economist Branko Milanović (writing for the World Bank), development economist Morten Jerven, and billionaire philanthropist Bill Gates have identified the Maddison Project, the Penn World Tables, and World Bank/IMF data (the World Development Indicators), as the three main sources of worldwide economic statistics such as GDP data, with the focus of the Maddison Project being on historical data. Economist Paul Krugman has suggested the Maddison Project as a data source for historical debt, growth, and labor output and productivity data." I want the historical perspective. 
+
+Bolt and van Zanden (2020) say that, "The Maddison database on Historical Statistics of the World Economy has probably the widest coverage of data on GDP per capita across countries and over time currently available ... . To compare income levels and developments for this period and set of countries, national income estimates are converted ... to a common currency using purchasing power parities (PPPs)." 
+
+## Download the data
+
+The web site for [Maddison project data](https://www.rug.nl/ggdc/historicaldevelopment/maddison/) offers both "Angus Maddison's unaltered final dataset" and the "Latest Maddison Project Release".
+
+On 2025-08-28 I saw that the "Latest Maddison Project Release" was dated 2024-09-18. I requested that and found that it was available in either Excel or Stata format. I downloaded the Excel format to my current working directory as `mpd2023web.xlsx`. (On 2025-08-28 I found a 4 MB file by this name dated 2025-06-03. I changed that name to `mpd023web0.xlsx` and downloaded ostensibly the same file and got one with 4.9 MB. I doubt if I would have deleted some of the content of the file with date 2025-06-03, though that's possible. In any event, I plan to ignore this difference.) 
+
+In 2024, I also downloaded ["Maddison Database 2010"](https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-database-2010) and compared it with `mpd2020.xlsx`. I compared the two for numbers for the former USSR, the UK, and the US. I found that the newer data had many numbers the older data didn't while the older data had a few numbers absent from the newer data. However, it seemed that I would be wise to ignore the older data. 
+
+We need the data in the current working directory.  We confirm what that is with `getwd()` as follows:  
+
+```{r wd}
+getwd()
+```
+
+With `mpd2020.xlsx` in the current working directory, the following should allow R to find it:  
+
+```{r findFiles}
+(xlsxFiles <- dir(pattern='\\.xlsx$'))
+
+(madCurFile <- dir(pattern='3_web\\.xlsx$'))  
+```
+
+The `GDPpc` rab in (the 2025-08-29) `mpd2023_web.xlsx` says "Real GDP per capita in 2011$". It also suggests I should read the `Full data` tab, because that has both `GDPpc` and  
+
+## Read the data 
+
+```{r rd}
+library("readxl")
+# madCur
+
+Maddison <- read_excel(madCurFile, 
+                      sheet='Full data')
+head(Maddison)
+```
+
+Looks like what we want.
+
+## Data exploration 
+
+Ranges of years? 
+
+```{r years}
+range(Maddison$year)
+```
+
+Let's tabulate `country` and `countrycode` and see if we get the same numbers.  
+
+```{r ctries}
+str(ctrycode <- table(Maddison$countrycode))
+quantile(ctrycode) # 776 for each countrycode
+str(ctry <- table(Maddison$country))
+(nMad <- nrow(Maddison))
+sum(ctry)
+nMad/ctry[1]
+```
+
+There are `r length(ctry)` countries and `r mean(ctry)` observations for each country but with lots of `NA`s.  
+
+```{r CtryCd}
+CtryCd <- with(Maddison, table(country, countrycode))
+table(rowSums(CtryCd!=0))
+```
+
+Good: one-to-one match between `country` and `countrycode`. 
+
+The numbers match, though not in the same order.  
+
+What combinations do we have of `gdppc` and `pop`? 
+
+```{r gdpPop}
+(MadTab <- with(Maddison, table(is.na(gdppc), is.na(pop))))
+(MadTab/sum(MadTab))
+```
+
+## 1. data.frame of first and last by country
+
+Let's create a `data.frame` of `country`, `countrycode`, `firstYear`, `lastYear`, `firstObs`, `lastObs`, and `count` of observations with either or both `gdppc` and `pop`.  
+
+```{r ctryTable}
+countryObs <- function(gdppc=TRUE, pop=FALSE, 
+                       Data=Maddison){
+  ctryTable <- data.frame(country=names(ctry), 
+    countryCode = NA, firstYear=NA, lastYear=NA, 
+    firstObs=NA, lastObs=NA, count=NA)
+  nCtries <- nrow(ctryTable)
+  for(i in 1:nCtries){
+    seli <- (Data$country == 
+               ctryTable$country[i])
+    if(gdppc){
+      seli <- (seli & !is.na(Data$gdppc))
+    }
+    if(pop){
+      seli <- (seli & !is.na(Data$pop))
+    }
+    Seli <- which(seli)
+    ctryTable$countryCode[i] <-
+          Maddison$countrycode[Seli[1]]
+    ctryTable$firstObs[i] <- min(Seli)
+    ctryTable$lastObs[i] <- max(Seli)
+    ctryTable$firstYear[i] <- Maddison$year[min(Seli)]
+    ctryTable$lastYear[i] <- Maddison$year[max(Seli)]
+    ctryTable$count[i] <- length(Seli)
+  }
+  ctryTable
+}
+gdppcObs <- countryObs()
+popObs <- countryObs(FALSE, TRUE)
+bothObs <- countryObs(TRUE, TRUE)
+
+quantile(gdppcObs$count)
+maxCnt <- max(gdppcObs$count)
+(iMax <- which(gdppcObs$count==maxCnt))
+gdppcObs[iMax,]
+```
+
+The most data are available for `GBR`. I should not be surprised. 
+
+Let's compare difference in years with `count`. 
+
+```{r dYrs}
+dYr <- with(gdppcObs, lastYear-firstYear+1)
+quantile(dYr)
+quantile(dYr-gdppcObs$count)
+
+plot(dYr, gdppcObs$count, log='xy', las=1)
+
+# UK 
+selGBR <- (Maddison$countrycode=='GBR')
+GBR <- Maddison[selGBR, ]
+table(dyr <- diff(GBR$year))
+(yr1 <- which.min(dyr))
+(Yr1 <- GBR$year[yr1])
+plot(GBR$year[-1], dyr, type='l', log='y', las=1)
+abline(v=Yr1, lty='dotted', col='grey')
+
+GBR$year[1:7]
+```
+
+## 2. Kalman smoothing by country 
+
+Let's write a function to compute the Kalman smooth for a given country or `countryCode` with a state vector of `(x, v)` = (level, velocity) for either log(`gdppc`) or log(`pop`), interpolating for the entire range of data available for the said country. For this, we use the [`KFAS`](https://stat.ethz.ch/CRAN/web/packages/KFAS/index.html) package with migration variance proportional to `diff(year)`. 
+
+For this model, the observation equation is `Z = matrix(1:0, 1, 2)`, and the transition equation is `T = matrix(c(1, 0, 1, 1), 2, 2)`
+
+```{r KFAS2}
+library(KFAS)
+KFAS2mdl <- function(P1 = NA, Ctry='GBR', y='gdppc', Data=Maddison){
+  sel <- ((Data$countrycode %in% Ctry) | 
+            (Data$countrycode %in% Ctry))
+  Dsel <- Data[sel, ]
+  ysel <- !is.na(Dsel[, y])
+  Ds <- Dsel[ysel, c('year', y)]
+  #colnames(Ds)[2] <- y
+  yrsel <- Ds[, 'year', drop=TRUE]
+  lgy <- log(Ds[, y, drop=TRUE])
+  ns <- nrow(Ds)
+#  
+  Hs <- matrix(NA) #obs. error; NA to estimate
+  dimnames(Hs) <- list(y, y)
+  stateComps <- c('level', 'slope')
+#  Qs <- diag(rep(NA, 2))
+#  dim(Qs) <- c(2, 2, 1)
+#  dimnames(Qs) <- list(stateComps, stateComps, 'const')
+  Q2 <- Q1 <- matrix(NA)
+  dimnames(Q1) <- list('level', 'level')
+  dimnames(Q2) <- list('slope', 'slope')
+  Qs <- list(level=Q1, slope=Q1)
+#  
+  SS2 <- SSModel(lgy ~ -1+ SSMtrend(2, Q=Qs), H = Hs)
+#  SS2$R <- diag(2)
+#  dimnames(SS2$R) <- dimnames(SS2$T)[1:2]
+#  if(is.na(P1))P1 <- diag(c(var(lgy), var(diff(lgy))))
+#  dimnames(P1) <- dimnames(SS2$T)[1:2]
+#  SS2$P1 <- P1
+#  SS2$Q <- SS2$R
+  SS2
+}
+GBRgdpMdl <- KFAS2mdl()
+GBRpopMdl <- KFAS2mdl(y='pop')
+```
+
+Let's try a naive fit ignoring the fact that the gaps between the first 5 observation are substantially more than 1 year: Do simple things first. Then worry about refinements. 
+
+```{r fit1}
+GBRgdpFit <- fitSSM(model_gaussian, inits = c(obs=.1, level=.1, slope=.1), 
+                    method = "BFGS")
+```
+
+
+
+oCtries <- order(ctryTable$gdppcEnd)
+ctryTable[rev(tail(oCtries)), c(1, 2, 9)]
+table(ctryTable$firstYear)
+```
+
+Check:  
+
+```{r ctryTblChk}
+quantile(ctryTable$count)
+sum(ctryTable$count)
+Cnt <- with(ctryTable, lastObs-firstObs+1)
+quantile(Cnt)
+dCnt <- (Cnt-ctryTable$count)
+quantile(dCnt)
+table(ctryTable$lastYear)
+length(dCnt)
+(maxCnt <- max(dCnt))
+(iMax <- which.max(dCnt))
+ctryTable[iMax,]
+(maxCode <- ctryTable$countryCode[iMax])
+
+selMax <- (Maddison$countrycode == maxCode)
+str(MadMax <- Maddison[selMax, ])
+
+```
+
+There are 169 `countryCode`s.  14 of those have no missing values between the first and last non-missing value. The other 79 countries have at least 1 `NA` between the `firstObs` and the `lastObs` in `Maddison`. 
+
+AND `lastYear` is 2022 for all observations.  
+
+Print
+
+```{r printTbl}
+ctryTable[c(1:3, 5)]
+```
+
+Next, we convert long to wide for `gdppc` following ["Converting data between wide and long format"](http://www.cookbook-r.com/Manipulating_data/Converting_data_between_wide_and_long_format/) in "Cookbook for R":
+
+```{r long2wide}
+library(tidyr)
+Madd0 <- pivot_wider(Maddison[c('country', 'year', 'gdppc')],
+            names_from = country, values_from = gdppc)
+Madd <- Madd0[order(Madd0$year), ]
+Madd[1:8, 1:5]
+dYr <- diff(Madd$year)
+plot(Madd$year[-1], dYr, log='y')
+quantile(dYr)
+
+nByYr <- table(Madd$year)
+head(nByYr)
+
+i_dY1 <- min(which(dYr<2))
+
+omit_i <- (1:(i_dY1-1))
+Madd1 <- Madd[-omit_i, ]
+(YrRng <- range(Madd1$year))
+Madd1[1:3,1:5]
+
+gdppcMax <- apply(Madd1[-1], 1, max, na.rm=TRUE)
+
+plot(Madd1$year, gdppcMax/1000, log='y', type='l',
+     las=1)
+
+(nYrs <- nrow(Madd1))
+whichMax <- rep(NA, nYrs)
+for(i in 1:nYrs){
+  i_s <- which(Madd1[i, -1]==gdppcMax[i])
+  whichMax[i] <- paste(names(Madd1[-1])[i_s], 
+                    collapse=';')
+}
+
+table(whichMax)
+
+chgPts <- (which(head(whichMax, -1) != 
+                  tail(whichMax, -1))+1)
+abline(v=Madd1$year[chgPts], lty='dotted', 
+       col='grey')
+
+```
+
+Let's remove Australia for its wool production and Kuwait, Norway, Qatar, and United Arab Emirates for petrolium plus Luxembourg, because it's too small to be the technology leader by itself. 
+
+```{r rawMat}
+rawMat <- c('Australia', 'Kuwait', 'Norway', 
+            'Qatar', 'United Arab Emirates', 
+            'Luxembourg')
+i_rawMat <- which(names(Madd1) %in% rawMat)
+omit_rawMat <- c(1, i_rawMat)
+
+whichMax2 <- rep(NA, nYrs)
+gdppcMax2 <- gdppcMax <- apply(Madd1[-omit_rawMat], 
+                               1, max, na.rm=TRUE)
+for(i in 1:nYrs){
+  i_s <- which(Madd1[i, -omit_rawMat]==gdppcMax2[i])
+  whichMax2[i] <- paste(names(Madd1[-omit_rawMat])[i_s], 
+                    collapse=';')
+}
+
+table(whichMax2)
+
+
+cbind(Madd1$year, whichMax2)
+cbind(Madd1$year, whichMax2)[-(1:500), ]
+
+plot(Madd1$year, gdppcMax/1000, log='y', type='l',
+     las=1)
+
+chgPts2 <- (which(head(whichMax2, -1) != 
+                  tail(whichMax2, -1))+1)
+abline(v=Madd1$year[chgPts2], lty='dotted', 
+       col='grey')
+
+chgLead <- c(Madd1$year[1], 
+  Madd1$year[chgPts2], tail(Madd1$year, 1))
+durLead <- diff(chgLead)
+table(durLead)
+
+nLongLead <- sum(durLead>13)
+longLeadCtries <- character(nLongLead)
+iLongLead <- 0 
+
+for(i in 1:(length(chgLead)-1)){
+  if(durLead[i]>13){
+    iLongLead <- iLongLead+1
+    lblx <- mean(chgLead[i+(0:1)])
+    lbli <- which(Madd1$year==trunc(lblx))
+    longLeadCtries[iLongLead] <- whichMax2[lbli]
+    lbly <- c(17, 3)[1+(lblx>1850)]
+    text(lblx, lbly, whichMax2[lbli], 
+         srt=90)
+  }
+}
+
+longLeadCs <- unique(longLeadCtries)
+nlLCs <- length(longLeadCs)
+with(Madd1, matplot(year, Madd1[longLeadCs], 
+     type='l', log='y'))
+legend('topleft', legend=longLeadCs, 
+       lty=1:nlLCs, col=1:nlLCs)
+       
+
+```            
+
+## Bibliography 
+
+* Jutta Bolt and Jan Luiten van Zanden (2020-10) [Maddison style estimates of the evolution of the world economy. A
+new 2020 update](https://www.rug.nl/ggdc/historicaldevelopment/maddison/publications/wp15.pdf), A new 2020 update: Maddison-Project Working Paper WP-15. 
+
