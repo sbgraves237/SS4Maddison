@@ -20,5 +20,3 @@
 #'   \item{region}{Geographic region including `country`}
 #' }
 #' @source <https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2020?lang=en>"Groningen Growth and Development Centre"
-
-devtools::load_all() # don't source R/
