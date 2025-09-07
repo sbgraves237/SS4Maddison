@@ -19,7 +19,8 @@ Suggests:
     ipumsr,
     lubridate,
     readxl,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    devtools
 VignetteBuilder: knitr
 Imports: KFAS
 License: GPL (>=2)
