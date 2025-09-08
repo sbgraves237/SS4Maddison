@@ -8,7 +8,8 @@ Description: Maddison project data in *.rda format with
 Authors@R: c(person(given = "Spencer",
               family = "Graves",
               role = c("aut", "cre"),
-              email = "spencer.graves@effectivedefense.org"))
+              email = "spencer.graves@effectivedefense.org", 
+              comment = c(ORCID = "0009-0005-5387-729X")))
 Author: Spencer Graves [aut, cre]
 Maintainer: Spencer Graves <spencer.graves@effectivedefense.org>
 BugReports: https://github.com/sbgraves237/SS4Maddison/issues
