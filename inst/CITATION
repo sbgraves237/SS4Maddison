@@ -1,11 +1,12 @@
 bibentry(
-  bibtype  = "Article",
-  title    = State Space modeling using Maddison project data,
-  author   = Spencer Graves,
+  "Article",
+  title    = "State Space modeling using Maddison project data",
+  author   = "Spencer Graves"",
   journal  = ,
   year     = 2025,
   volume   = ,
   number   = ,
   pages    = ,
-  doi      =
+  doi      = ,
 )
+
