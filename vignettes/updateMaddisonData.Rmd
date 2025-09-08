@@ -34,3 +34,45 @@ On 2025-08-28 I saw that the "Latest Maddison Project Release" was dated 2024-09
 
 In 2024, I also downloaded ["Maddison Database 2010"](https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-database-2010) and compared it with `mpd2020.xlsx`. I compared the two for numbers for the former USSR, the UK, and the US. I found that the newer data had many numbers the older data didn't while the older data had a few numbers absent from the newer data. However, it seemed that I would be wise to ignore the older data. 
 
+## Find the data file
+
+```{r findData}
+# I think the following should work but doesn't:
+# (SS4xlsx <- fs::path_package('SS4Maddison', 
+#              'extdata', 'mpd2023_web.xlsx'))
+
+dataName <- '^mpd2023.*xlsx$'
+(SS4vig_wd <- getwd())
+(SS4xlsx <- dir(SS4vig_wd, dataName, 
+                  full.names = TRUE))
+```
+
+```{r findD2}
+if(length(SS4xlsx)<1){
+# Is working data vignette directory? If yes, try parent  
+  (SS4vig_split <- strsplit(SS4vig_wd, '/')[[1]])
+  if(tail(SS4vig_split, 1) == 'vignette'){
+    SS4vig_wd <- paste(head(SS4vig_split, 1), 
+                collapse='/') 
+  }
+  (SS4xlsx <- dir(SS4vig_wd, dataName, 
+                        full.names = TRUE))
+  if(length(SS4xlsx)<1){
+    (SS4extdata <- paste0(SS4vig_wd, '/extdata'))
+    (SS4xlsx <- dir(SS4extdata, dataName, 
+                        full.names = TRUE))
+    if(length(SS4xlsx)<1){
+      (SS4inst <- paste0(SS4vig_wd, '/inst'))
+      (SS4xlsx <- dir(SS4inst, dataName, 
+                        full.names = TRUE))
+      if(length(SS4xlsx)<1){
+        (SS4extdata <- paste0(SS4inst, '/extdata'))
+        (SS4xlsx <- dir(SS4extdata, dataName, 
+                        full.names = TRUE))
+      }
+    }        
+  }
+}
+SS4xlsx
+```
+
