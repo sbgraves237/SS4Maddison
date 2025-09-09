@@ -2,32 +2,33 @@ Package: SS4Maddison
 Title: State Space modeling using Maddison project data
 Version: 0.0.0
 Date: 2025-09-02
-Description: Maddison project data in *.rda format with 
-    functions and vignettes to illustrate how to use KFAS
-    and other tools to model Maddison data. 
-Authors@R: c(person(given = "Spencer",
-              family = "Graves",
-              role = c("aut", "cre"),
-              email = "spencer.graves@effectivedefense.org", 
-              comment = c(ORCID = "0009-0005-5387-729X")))
+Authors@R: 
+    person("Spencer", "Graves", , "spencer.graves@effectivedefense.org", role = c("aut", "cre"),
+           comment = c(ORCID = "0009-0005-5387-729X"))
 Author: Spencer Graves [aut, cre]
 Maintainer: Spencer Graves <spencer.graves@effectivedefense.org>
+Description: Maddison project data in *.rda format with functions and
+    vignettes to illustrate how to use KFAS and other tools to model
+    Maddison data.
+License: GPL (>=2)
+URL: https://www.r-project.org, https://github.com/sbgraves237/SS4Maddison
 BugReports: https://github.com/sbgraves237/SS4Maddison/issues
-Depends: R (>= 3.5.0)
+Depends: 
+    R (>= 3.5.0)
+Imports: 
+    KFAS
 Suggests: 
-    knitr,
-    rmarkdown,
     ipumsr,
+    knitr,
     lubridate,
     readxl,
+    rmarkdown,
     testthat (>= 3.0.0)
-VignetteBuilder: knitr
-Imports: KFAS
-License: GPL (>=2)
+VignetteBuilder: 
+    knitr
+Config/testthat/edition: 3
 Encoding: UTF-8
+Language: en-us
+NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
-Language: en-us
-URL: https://www.r-project.org, https://github.com/sbgraves237/SS4Maddison
-NeedsCompilation: no
-Config/testthat/edition: 3
