@@ -51,8 +51,8 @@ dataName <- '^mpd2023.*xlsx$'
 if(length(SS4xlsx)<1){
 # Is working data vignette directory? If yes, try parent  
   (SS4vig_split <- strsplit(SS4vig_wd, '/')[[1]])
-  if(tail(SS4vig_split, 1) == 'vignette'){
-    SS4vig_wd <- paste(head(SS4vig_split, 1), 
+  if(tail(SS4vig_split, 1) == 'vignettes'){
+    SS4vig_wd <- paste(head(SS4vig_split, -1), 
                 collapse='/') 
   }
   (SS4xlsx <- dir(SS4vig_wd, dataName, 
@@ -75,4 +75,21 @@ if(length(SS4xlsx)<1){
 }
 SS4xlsx
 ```
+
+If more than one file was found, pick the most recent one. 
+
+```{r whichSS4xlsx}
+if(length(SS4xlsx)>1){
+  MadInfo <- file.info(SS4xlsx)
+  cat('Multiple files found.\n')
+  print(MadInfo)
+  imax <- which.max(MadInfo$mtime)
+  SS4xlsx <- SS4xlsx[imax]
+  
+}
+```
+
+## Read the data file
+
+Now read `SS4xlsx`. 
 
