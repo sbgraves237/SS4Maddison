@@ -1,11 +1,9 @@
 #' Construct a path to a location within an installed or development package
 #'
-#' @description
-#' `r path_package2(target='^mpd.*xlsx$')`
-#' 
-#' `path_package2` differs from [system.file()] in that it supports searching 
-#' for a `target` file or folder possible in `subdirs` of the working directory 
-#' or `nparents` of its parents.  
+#' `path_package2` returns a character vector of matches to `target`.
+#' It differs from [system.file()] in that it supports searching for a `target`
+#' file or folder possibly in `subdirs` of the working directory or in 
+#' `nparents` of its parents.  
 #' 
 #' This works in a vignette searching for a `target` that could be in the 
 #' `vignettes` directory of its parent package or in the package directory 
