@@ -33,6 +33,8 @@
 #' directory in which to search; default = 1. 
 #' @param subdirs = c('extdata',  
 #'                     paste('inst','extdata', sep=.Platform$file.sep))
+#' @returns a character vector with an attribute `searched` giving the full 
+#' paths of all directories searched for `target`. 
 #' @examples
 #' # search for a file matching a regular expression
 #' path_package2('^mpd.*xlsx$') 
