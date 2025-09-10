@@ -1,6 +1,9 @@
 #' Construct a path to a location within an installed or development package
 #'
-#' `path_package2` differs from [system.file()] in that it supports seaching 
+#' @description
+#' `r path_package2(target='^mpd.*xlsx$')`
+#' 
+#' `path_package2` differs from [system.file()] in that it supports searching 
 #' for a `target` file or folder possible in `subdirs` of the working directory 
 #' or `nparents` of its parents.  
 #' 
@@ -24,6 +27,7 @@
 #' `path_package2()` based on whether the object returned was of length 0 or 
 #' greater than 0. 
 #'
+#' @export
 #' @param target A regular expression describing the file of folder desired. 
 #' @param package Name of the package to in which to search. If `NULL`, search 
 #' in the working directory. Otherwise search in `system.file(package)`. 
@@ -37,7 +41,7 @@
 #' # search only in the working directory
 #' path_package2('^mpd.*xlsx$, nparents=0, subdirs=character(0)) 
 #' 
-#' @export
+#' @keywords file 
 path_package2 <- function(target, package=NULL, nparents=1, 
     subdirs = c('extdata', 
         paste('inst','extdata', sep=.Platform$file.sep))){
