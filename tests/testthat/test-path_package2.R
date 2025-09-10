@@ -3,6 +3,8 @@ test_that("path_package2", {
 # Example 1  
   mpdXlsx <- path_package2('^mpd.*xlsx$') 
   searched <- attr(mpdXlsx, 'searched')
+# A call to "expect*" seems to be needed to trigger testing    
+  expect_equal(class(mpdXlsx), 'character')
   if(length(mpdXlsx)>0){
     mpdList <- strsplit(mpdXlsx, .Platform$file.sep)[[1]]
     if(length(grep('^mpd.*xlsx$', tail(mpdList, 1)))<1){
