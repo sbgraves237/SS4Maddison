@@ -1,6 +1,6 @@
 Package: SS4Maddison
 Title: State Space modeling using Maddison project data
-Version: 0.0.0
+Version: 0.0.1
 Date: 2025-09-09
 Authors@R: 
     person("Spencer", "Graves", , "spencer.graves@effectivedefense.org", role = c("aut", "cre"),
