@@ -37,43 +37,7 @@ In 2024, I also downloaded ["Maddison Database 2010"](https://www.rug.nl/ggdc/hi
 ## Find the data file
 
 ```{r findData}
-# I think the following should work but doesn't:
-# (SS4xlsx <- fs::path_package('SS4Maddison', 
-#              'extdata', 'mpd2023_web.xlsx'))
-
-dataName <- '^mpd2023.*xlsx$'
-(SS4vig_wd <- getwd())
-(SS4xlsx <- dir(SS4vig_wd, dataName, 
-                  full.names = TRUE))
-```
-
-```{r findD2}
-if(length(SS4xlsx)<1){
-# Is working data vignette directory? If yes, try parent  
-  (SS4vig_split <- strsplit(SS4vig_wd, '/')[[1]])
-  if(tail(SS4vig_split, 1) == 'vignettes'){
-    SS4vig_wd <- paste(head(SS4vig_split, -1), 
-                collapse='/') 
-  }
-  (SS4xlsx <- dir(SS4vig_wd, dataName, 
-                        full.names = TRUE))
-  if(length(SS4xlsx)<1){
-    (SS4extdata <- paste0(SS4vig_wd, '/extdata'))
-    (SS4xlsx <- dir(SS4extdata, dataName, 
-                        full.names = TRUE))
-    if(length(SS4xlsx)<1){
-      (SS4inst <- paste0(SS4vig_wd, '/inst'))
-      (SS4xlsx <- dir(SS4inst, dataName, 
-                        full.names = TRUE))
-      if(length(SS4xlsx)<1){
-        (SS4extdata <- paste0(SS4inst, '/extdata'))
-        (SS4xlsx <- dir(SS4extdata, dataName, 
-                        full.names = TRUE))
-      }
-    }        
-  }
-}
-SS4xlsx
+(SS4xlsx <- path_package2('^mpd2023.*xlsx$'))
 ```
 
 If more than one file was found, pick the most recent one. 
@@ -85,7 +49,6 @@ if(length(SS4xlsx)>1){
   print(MadInfo)
   imax <- which.max(MadInfo$mtime)
   SS4xlsx <- SS4xlsx[imax]
-  
 }
 ```
 
@@ -93,3 +56,8 @@ if(length(SS4xlsx)>1){
 
 Now read `SS4xlsx`. 
 
+```{r readMaddison}
+if(length(SS4xlsx)>0){
+  MaddisonSources <- readxl::read_xlsx(SS4xlsx, sheet='Sources')
+  MaddisonData <- readxl::read_xlsx(SS4xlsx, sheet='Full data')
+}
