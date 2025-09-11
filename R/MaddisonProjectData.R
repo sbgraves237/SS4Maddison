@@ -9,7 +9,10 @@
 #' \describe{
 #'   \item{countrycode}{3-letter ISO country code}
 #'   \item{year}{Year}
-#'   \item{gdppc}{Real Gross Domestic Product (GDP) per capita in 2011$ at purchasing power parity (PPP)}
+#'   \item{gdppc}{Real Gross Domestic Product (GDP) per capita in 2011$ at 
+#'      [purchasing power parity (PPP)](
+#'      https://en.wikipedia.org/wiki/Purchasing_power_parity)
+#'   }
 #'   \item{pop}{population}
 #' }
 #' @format ## `MaddisonCountries`
@@ -29,5 +32,4 @@
 #' # What are "Western Offshoots"? 
 #' subset(MaddisonCountries, grepl('Of', region), c(country, countrycode))
 #' 
-#' @export 
 #' @source <https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2020?lang=en>"Groningen Growth and Development Centre"
