@@ -15,8 +15,8 @@
 #' @format ## `MaddisonCountries`
 #' A data frame with 3 columns: 
 #' \describe{
-#'   \item{country}{Country name used by the Maddison project}
 #'   \item{countrycode}{3-letter ISO country code}
+#'   \item{country}{Country name used by the Maddison project}
 #'   \item{region}{Geographic region including `country`}
 #' }
 #' @source <https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2020?lang=en>"Groningen Growth and Development Centre"
