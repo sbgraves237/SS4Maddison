@@ -124,10 +124,10 @@ if(length(SS4xlsx)>0){
   subset(MaddisonCountries, countrycode=='GBR', country)
   subset(MaddisonCountries, grepl('Yugo', country), 1:3)
   table(MaddisonCountries$region)
-  head(LaAm <- subset(MaddisonCountries, grepl('Am', region), 
-                      c(country, countrycode)))
+  # What are "Western Offshoots"? 
+  subset(MaddisonCountries, grepl('Of', region), 
+                      c(country, countrycode))
 }
-head(subset(MaddisonCountries, grepl('Amer', region), 1:3))
 ```
 
 
