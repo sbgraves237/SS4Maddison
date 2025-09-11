@@ -108,7 +108,7 @@ if(length(SS4xlsx)>0){
   ctryRgn <- sort(with(MaddisonData0, unique(
             paste0(countrycode, region))))
   MaddisonCountries <- cbind(cd_Ctry, 
-            substring(ctryRgn, 4))
+            region = substring(ctryRgn, 4))
   save(MaddisonCountries, file='MaddisonCountries.rda', 
        compress=TRUE)  
   getwd()
