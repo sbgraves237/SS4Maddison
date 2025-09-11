@@ -98,24 +98,7 @@ if(length(SS4xlsx)>0){
 }
 ```
 
-How do `cd_Ctry` relate to the [`countrycode`](https://search.r-project.org/CRAN/refmans/countrycode/html/countrycode.html) function? 
-
-```{r countrycodeFn}
-if(length(SS4xlsx)>0){
-  cdsFrFn <- countrycode::countrycode(
-    cd_Ctry$country, 'country.name.en', 'iso3c')
-# Warning: some ambig, e.g., Czech & Yugoslavia
-  ctryFrFn <- countrycode::countrycode(
-    cd_Ctry$countrycode, 'iso3c', 
-      'country.name.en')
-# Warning: Some ambig: CSK, SUN, YUG          
-  ctryFrFn <- countrycode::countrycode(
-    cd_Ctry$countrycode, 'iso3c', 'ecb')
-# Warning: Some ambig: CSK, SUN, YUG          
-}
-```
-
-Conclusion: Further experimentation might identify a way we can use the `countrycode` function with the Maddison data, but that does not seem likely at the moment. 
+NOTE: There is a [`countrycode`](https://search.r-project.org/CRAN/refmans/countrycode/html/countrycode.html) function in a [`countrycode`](https://search.r-project.org/CRAN/refmans/countrycode/html/00Index.html) package that sounds like it might help translating between `country` and `countrycode`. However, a little experimentation exposed "ambiguous" results. Therefore, we will not pursue that further here. 
 
 Let's create `MaddisonCountries` as a `data.frame` with columns: `countrycode`, `country`, and region: 
 
@@ -128,7 +111,7 @@ if(length(SS4xlsx)>0){
             substring(ctryRgn, 4))
   save(MaddisonCountries, file='MaddisonCountries.rda', 
        compress=TRUE)  
-  dir()
+  getwd()
 }
 ```
 
