@@ -126,25 +126,26 @@ if(length(SS4xlsx)>0){
             paste0(countrycode, region))))
   MaddisonCountries <- cbind(cd_Ctry, 
             substring(ctryRgn, 4))
-  saveRDS(MaddisonCountries, 'MaddisonCountries.rda')  
+  save(MaddisonCountries, file='MaddisonCountries.rda', 
+       compress=TRUE)  
   dir()
 }
 ```
 
 This saves `MaddisonCountries` in MaddisonCountries.rda` in the working directory. To include that in the package, copy or move that file into the `data` subdirectory of the package. 
 
+## MaddisonData
+
+## MaddisonSources
+
 The first and last rows in `MaddisonSources0` give general info for GDP and population for all countries since 2008 and 1990, respectively. 
 
 Row 3 of `MaddisonSources0` actually contains the `colnames` we want. And some rows are all `NA`. Which? 
 
 ```{r checkSources}
-str(sourceNA <- which(is.na(MaddisonSources0[,1])
+if(length(SS4xlsx)>0){
+  str(sourceNA <- which(is.na(MaddisonSources0[,1])
         & is.na(MaddisonSources0[,2]) & 
           is.na(MaddisonSources0[,3])))
-```
-
-
-nRowMadSrc <- nrow(MaddisonSources0)
-MaddisonSources0[c(2, nRowMadSrc-(4:3)), ]
-```
+}
 ```
