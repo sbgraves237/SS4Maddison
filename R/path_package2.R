@@ -67,7 +67,8 @@ path_package2 <- function(target, package=NULL, nparents=1,
   if(length(Fl)<1){
     splitDir <- strsplit(s1, .Platform$file.sep)[[1]]
     for(i in seq(length=nparents)){
-      Di <- paste0(utils::head(splitDir, -i))
+      Di <- paste(utils::head(splitDir, -i), 
+                    collapse=.Platform$file.sep)
       Fl <- Search(Di)
       searched <- c(searched, attr(Fl, 'searched'))
       if(length(Fl)>0) break 
