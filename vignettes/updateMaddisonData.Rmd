@@ -130,9 +130,19 @@ if(length(SS4xlsx)>0){
 }
 ```
 
+Now create `MaddisonData` with `countrycode` but without `country` and `region`.
 
+First identify all rows of `MaddisonData` with both `gdppc` and `pop` `NA`. 
 
 ## MaddisonData
+
+```{r subset}
+if(length(SS4xlsx)>0){
+
+
+  
+}
+```
 
 ## MaddisonSources
 
