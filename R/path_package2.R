@@ -22,10 +22,8 @@
 #' `path_package2` allows the user to store the `target` locally, e.g., in 
 #' `inst/extdata` but include it in `.gitignore` to prevent it from leaving the 
 #' local computer. The vignette then decides what to do after calling 
-#' `path_package2()` based on whether the object returned was of length 0 or 
-#' greater than 0. 
+#' `path_package2()` based on the length of the the object returned. 
 #'
-#' @export
 #' @param target A regular expression describing the file of folder desired. 
 #' @param package Name of the package to in which to search. If `NULL`, search 
 #' in the working directory. Otherwise search in `system.file(package)`. 
@@ -35,11 +33,13 @@
 #'                     paste('inst','extdata', sep=.Platform$file.sep))
 #' @returns a character vector with an attribute `searched` giving the full 
 #' paths of all directories searched for `target`. 
+#' @export
+#'
 #' @examples
 #' # search for a file matching a regular expression
 #' path_package2('^mpd.*xlsx$') 
 #' # search only in the working directory
-#' path_package2('^mpd.*xlsx$, nparents=0, subdirs=character(0)) 
+#' path_package2('^mpd.*xlsx$', nparents=0, subdirs=character(0)) 
 #' 
 #' @keywords file 
 path_package2 <- function(target, package=NULL, nparents=1, 
