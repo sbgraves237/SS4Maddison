@@ -15,6 +15,7 @@
 #'   }
 #'   \item{pop}{population}
 #' }
+
 #' @format ## `MaddisonCountries`
 #' A data frame with 3 columns: 
 #' \describe{
@@ -22,6 +23,8 @@
 #'   \item{country}{Country name used by the Maddison project}
 #'   \item{region}{Geographic region including `country`}
 #' }
+"MaddisonCountries"
+
 #' @examples
 #' # Get the country for a countrycode
 #' subset(MaddisonCountries, countrycode=='GBR', country)
