@@ -136,7 +136,7 @@ First identify all rows of `MaddisonData` with both `gdppc` and `pop` `NA`.
 
 ## MaddisonData
 
-```{r subset}
+```{r MaddisonData}
 if(length(SS4xlsx)>0){
 
 
