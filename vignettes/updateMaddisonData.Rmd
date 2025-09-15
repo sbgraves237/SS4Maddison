@@ -111,6 +111,8 @@ if(length(SS4xlsx)>0){
             region = substring(ctryRgn, 4))
   save(MaddisonCountries, file='MaddisonCountries.rda', 
        compress=TRUE)  
+# per R Packages, section 9.7  
+  tryUse <- try(usethis::use_data(MaddisonCountries))
   getwd()
 }
 ```
