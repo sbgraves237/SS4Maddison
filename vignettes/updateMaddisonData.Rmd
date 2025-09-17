@@ -55,15 +55,13 @@ SS4xlsx <- SS4xlsx[imax]
 
 Now read `SS4xlsx`. 
 
-```{r readMaddison}
-if(length(SS4xlsx)>0){
-  MaddisonData0 <- readxl::read_xlsx(SS4xlsx, sheet='Full data')
-  head(MaddisonData0, 2)
-  tail(MaddisonData0)
-  MaddisonSources0 <- readxl::read_xlsx(SS4xlsx, sheet='Sources')
-  head(MaddisonSources0)
-  tail(MaddisonSources0)
-}
+```{r readMaddison, eval=foundData}
+MaddisonData0 <- readxl::read_xlsx(SS4xlsx, sheet='Full data')
+head(MaddisonData0, 2)
+tail(MaddisonData0)
+MaddisonSources0 <- readxl::read_xlsx(SS4xlsx, sheet='Sources')
+head(MaddisonSources0)
+tail(MaddisonSources0)
 ```
 
 ## Countries and country codes? 
