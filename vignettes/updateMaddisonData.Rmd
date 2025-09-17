@@ -38,18 +38,17 @@ In 2024, I also downloaded ["Maddison Database 2010"](https://www.rug.nl/ggdc/hi
 
 ```{r findData}
 (SS4xlsx <- path_package2('^mpd2023.*xlsx$'))
+foundData <- (length(SS4xlsx)>0)
 ```
 
 If more than one file was found, pick the most recent one. 
 
-```{r whichSS4xlsx}
-if(length(SS4xlsx)>1){
-  MadInfo <- file.info(SS4xlsx)
-  cat('Multiple files found.\n')
-  print(MadInfo)
-  imax <- which.max(MadInfo$mtime)
-  SS4xlsx <- SS4xlsx[imax]
-}
+```{r whichSS4xlsx, eval=foundData}
+MadInfo <- file.info(SS4xlsx)
+cat('Multiple files found.\n')
+print(MadInfo)
+imax <- which.max(MadInfo$mtime)
+SS4xlsx <- SS4xlsx[imax]
 ```
 
 ## Read the data file
