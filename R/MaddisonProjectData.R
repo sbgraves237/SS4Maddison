@@ -3,19 +3,9 @@
 #' The 
 #' \href{https://en.wikipedia.org/wiki/Maddison_Project}{Maddison project} 
 #' collates historical economic statistics from many sources. 
+#' This is a [`data.frame`] of all (`countrycode`, `country`, `region`) 
+#' combinations in those data. 
 #'
-#' @format ## `MaddisonData`
-#' A data frame with 4 columns:
-#' \describe{
-#'   \item{countrycode}{3-letter ISO country code}
-#'   \item{year}{Year}
-#'   \item{gdppc}{Real Gross Domestic Product (GDP) per capita in 2011$ at 
-#'      [purchasing power parity (PPP)](
-#'      https://en.wikipedia.org/wiki/Purchasing_power_parity)
-#'   }
-#'   \item{pop}{population}
-#' }
-
 #' @format ## `MaddisonCountries`
 #' A data frame with 3 columns: 
 #' \describe{
@@ -24,7 +14,7 @@
 #'   \item{region}{Geographic region including `country`}
 #' }
 "MaddisonCountries"
-
+#' 
 #' @examples
 #' # Get the country for a countrycode
 #' subset(MaddisonCountries, countrycode=='GBR', country)
