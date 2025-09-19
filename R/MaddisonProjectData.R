@@ -13,7 +13,6 @@
 #'   \item{country}{Country name used by the Maddison project}
 #'   \item{region}{Geographic region including `country`}
 #' }
-"MaddisonCountries"
 #' 
 #' @examples
 #' # Get the country for a countrycode
@@ -26,3 +25,4 @@
 #' subset(MaddisonCountries, grepl('Of', region), c(country, countrycode))
 #' 
 #' @source <https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2020?lang=en>"Groningen Growth and Development Centre"
+"MaddisonCountries"
