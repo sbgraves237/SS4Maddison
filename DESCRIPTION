@@ -2,11 +2,9 @@ Package: SS4Maddison
 Title: State Space modeling using Maddison project data
 Version: 0.0.1
 Date: 2025-09-24
-Authors@R: c(
-    person("Spencer", "Graves", , "spencer.graves@effectivedefense.org", 
-           role = c("aut", "cre"),
+Authors@R: 
+    person("Spencer", "Graves", , "spencer.graves@effectivedefense.org", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0005-5387-729X"))
-           )
 Description: Maddison project data in *.rda format with functions and
     vignettes to illustrate how to use KFAS and other tools to model
     Maddison data.
@@ -15,14 +13,13 @@ URL: https://github.com/sbgraves237/SS4Maddison
 BugReports: https://github.com/sbgraves237/SS4Maddison/issues
 Depends: 
     R (>= 4.1)
-Imports: 
 Suggests: 
     ipumsr,
     knitr,
     lubridate,
     readxl,
     rmarkdown,
-    testthat (>= 3.0.0), 
+    testthat (>= 3.0.0),
     usethis
 VignetteBuilder: 
     knitr
@@ -31,4 +28,3 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
-
