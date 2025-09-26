@@ -28,4 +28,14 @@ collates historical economic statistics from many sources.
 \code{MaddisonCountries} is a \code{\link{data.frame}} of all (\code{countrycode}, \code{country},
 \code{region}) combinations in those data.
 }
+\examples{
+# Get the country for a countrycode
+subset(MaddisonCountries, countrycode=='GBR', country)
+# Find Yugoslavia 
+subset(MaddisonCountries, grepl('Yugo', country), 1:3)
+# number of countries by region 
+table(MaddisonCountries$region)
+# What are "Western Offshoots"? 
+subset(MaddisonCountries, grepl('Of', region), c(country, countrycode))
+}
 \keyword{datasets}
