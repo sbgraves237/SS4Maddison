@@ -14,5 +14,14 @@
 #'   \item{country}{Country name used by the Maddison project}
 #'   \item{region}{Geographic region including `country`}
 #' }
+#' @examples
+#' # Get the country for a countrycode
+#' subset(MaddisonCountries, countrycode=='GBR', country)
+#' # Find Yugoslavia 
+#' subset(MaddisonCountries, grepl('Yugo', country), 1:3)
+#' # number of countries by region 
+#' table(MaddisonCountries$region)
+#' # What are "Western Offshoots"? 
+#' subset(MaddisonCountries, grepl('Of', region), c(country, countrycode))
 #' @source <https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2020?lang=en>"Groningen Growth and Development Centre"
 "MaddisonCountries"
