@@ -70,69 +70,61 @@ The [`countrycode`](https://search.r-project.org/CRAN/refmans/countrycode/html/c
 
 How many characters in `countrycode`? 
 
-```{r nchCode}
-if(length(SS4xlsx)>0){
-  ctryCds <- unique(MaddisonData0$countrycode)
-  nCds <- length(ctryCds)
-  table(nchCode <- nchar(ctryCds))
-}
+```{r nchCode, eval=foundData}
+ctryCds <- unique(MaddisonData0$countrycode)
+nCds <- length(ctryCds)
+table(nchCode <- nchar(ctryCds))
 ```
 
 Good: All 3-letter codes. 
 
 Let's concatonate `country` after `countrycode` then check to see if there are any `ctryCds` with multiple `country` names. 
 
-```{r cdCtry}
-if(length(SS4xlsx)>0){
-  cdCtry <- sort(with(MaddisonData0, unique(
+```{r cdCtry, eval=foundData}
+cdCtry <- sort(with(MaddisonData0, unique(
             paste0(countrycode, country))))
-  if(length(cdCtry)!=nCds){
+if(length(cdCtry)!=nCds){
     stop('some countrycode(s) have more than one', 
          ' country')
-  }
-  cd_Ctry <- data.frame(countrycode=substring(cdCtry, 1, 3),
-                        country=substring(cdCtry, 4))
 }
+cd_Ctry <- data.frame(countrycode=substring(cdCtry, 1, 3),
+                        country=substring(cdCtry, 4))
 ```
 
 NOTE: There is a [`countrycode`](https://search.r-project.org/CRAN/refmans/countrycode/html/countrycode.html) function in a [`countrycode`](https://search.r-project.org/CRAN/refmans/countrycode/html/00Index.html) package that sounds like it might help translating between `country` and `countrycode`. However, a little experimentation exposed "ambiguous" results. Therefore, we will not pursue that further here. 
 
 Let's create `MaddisonCountries` as a `data.frame` with columns: `countrycode`, `country`, and region: 
 
-```{r MaddisonCountries}
-if(length(SS4xlsx)>0){
-  rownames(cd_Ctry) <- cd_Ctry$countrycode
-  ctryRgn <- sort(with(MaddisonData0, unique(
+```{r MaddisonCountries, eval=foundData}
+rownames(cd_Ctry) <- cd_Ctry$countrycode
+ctryRgn <- sort(with(MaddisonData0, unique(
             paste0(countrycode, region))))
-  MaddisonCountries <- cbind(cd_Ctry, 
+MaddisonCountries <- cbind(cd_Ctry, 
             region = substring(ctryRgn, 4))
-  save(MaddisonCountries, file='MaddisonCountries.rdb', 
+save(MaddisonCountries, file='MaddisonCountries.rdb', 
        compress=TRUE)  
 # CANNOT include MaddisonCountries.rdb in .Rbuildignore, 
 # so change the name.   
 # per R Packages, section 9.7  
 # As of 2025-09-24 the R Packages book recommends writing 
 # using usethis::use_data 
-  if(FALSE){  
+if(FALSE){  
     tryUse <- try(usethis::use_data(MaddisonCountries))
-  }
-  getwd()
 }
+getwd()
 ```
 
 This saves `MaddisonCountries` in MaddisonCountries.rda` in the working directory. To include that in the package, copy or move that file into the `data` subdirectory of the package. 
 
 We can use [subset](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/subset) got translate between `country` and `countrycode` or select all countries in selected regions. 
 
-```{r subset}
-if(length(SS4xlsx)>0){
-  subset(MaddisonCountries, countrycode=='GBR', country)
-  subset(MaddisonCountries, grepl('Yugo', country), 1:3)
-  table(MaddisonCountries$region)
-  # What are "Western Offshoots"? 
-  subset(MaddisonCountries, grepl('Of', region), 
+```{r subset, eval=foundData}
+subset(MaddisonCountries, countrycode=='GBR', country)
+subset(MaddisonCountries, grepl('Yugo', country), 1:3)
+table(MaddisonCountries$region)
+# What are "Western Offshoots"? 
+subset(MaddisonCountries, grepl('Of', region), 
                       c(country, countrycode))
-}
 ```
 
 Now create `MaddisonData` with `countrycode` but without `country` and `region`.
@@ -141,12 +133,12 @@ First identify all rows of `MaddisonData` with both `gdppc` and `pop` `NA`.
 
 ## MaddisonData
 
-```{r MaddisonData}
-if(length(SS4xlsx)>0){
+```{r MaddisonData, eval=foundData}
+
 
 
   
-}
+
 ```
 
 ## MaddisonSources
