@@ -103,13 +103,13 @@ MaddisonCountries <- cbind(cd_Ctry,
             region = substring(ctryRgn, 4))
 save(MaddisonCountries, file='MaddisonCountries.rdb', 
        compress=TRUE)  
-# CANNOT include MaddisonCountries.rdb in .Rbuildignore, 
+# CANNOT include MaddisonCountries.rda in .Rbuildignore, 
 # so change the name.   
 # per R Packages, section 9.7  
 # As of 2025-09-24 the R Packages book recommends writing 
 # using usethis::use_data 
 if(FALSE){  
-    tryUse <- try(usethis::use_data(MaddisonCountries))
+    tryUse <- try(usethis::use_data(MaddisonData))
 }
 getwd()
 ```
@@ -134,10 +134,20 @@ First identify all rows of `MaddisonData` with both `gdppc` and `pop` `NA`.
 ## MaddisonData
 
 ```{r MaddisonData, eval=foundData}
+NAs <- with(MaddisonData0, is.na(gdppc*pop))
+str(MaddisonData <- MaddisonData0[!NAs, c(1, 4:6)])
 
-
-
-  
+save(MaddisonData, file='MaddisonData.rdb', 
+       compress=TRUE)  
+# CANNOT include MaddisonData.rda in .Rbuildignore, 
+# so change the name.   
+# per R Packages, section 9.7  
+# As of 2025-09-24 the R Packages book recommends writing 
+# using usethis::use_data 
+if(FALSE){  
+    tryUse <- try(usethis::use_data(MaddisonCountries))
+}
+getwd()
 
 ```
 
@@ -147,10 +157,8 @@ The first and last rows in `MaddisonSources0` give general info for GDP and popu
 
 Row 3 of `MaddisonSources0` actually contains the `colnames` we want. And some rows are all `NA`. Which? 
 
-```{r checkSources}
-if(length(SS4xlsx)>0){
-  str(sourceNA <- which(is.na(MaddisonSources0[,1])
+```{r checkSources, eval=foundData}
+str(sourceNA <- which(is.na(MaddisonSources0[,1])
         & is.na(MaddisonSources0[,2]) & 
           is.na(MaddisonSources0[,3])))
-}
 ```
