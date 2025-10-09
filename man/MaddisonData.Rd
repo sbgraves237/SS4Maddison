@@ -9,7 +9,7 @@
 
 A data frame with 4 columns:
 \describe{
-\item{countrycode}{3-letter ISO country code}
+\item{ISO}{3-letter ISO country code}
 \item{year}{numeric year starting with year 1 CE}
 \item{gdppc}{Gross domestic product (GDP) per capita in 2011 dollars at
 puchasing power parity (PPP)}
@@ -32,8 +32,8 @@ collates historical economic statistics from many sources.
 }
 \examples{
 # Get the countrycode for a country
-subset(MaddisonCountries, country=='United Kingdom', countrycode)
+subset(MaddisonCountries, country=='United Kingdom', ISO)
 # Select  
-str(GBR <- MaddisonData[MaddisonData$countrycode=='GBR', ])
+str(GBR <- MaddisonData[MaddisonData$ISO=='GBR', ])
 }
 \keyword{datasets}
