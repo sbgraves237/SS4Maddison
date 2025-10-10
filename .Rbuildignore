@@ -3,4 +3,7 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^LICENSE\.md$
-*\.rdb$
+MaddisonData.rdb
+MaddisonSources.rdb
+MaddisonYears.rdb
+MaddisonCountries.rdb
