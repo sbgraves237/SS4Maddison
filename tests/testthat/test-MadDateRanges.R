@@ -4,6 +4,6 @@ test_that("MadDateRanges", {
     data.frame(
       yearBegin=c(1,  700, 1820, 1870, 1913, 1950), 
       yearEnd  =c(1, 1500, 1820, 1870, 1913, 1950), 
-      index    =c(1, 2, rep(3, 4)))
+      sourceNum=c(1, 2, rep(3, 4)))
     )
 })
