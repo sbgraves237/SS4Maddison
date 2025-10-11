@@ -1,7 +1,7 @@
 #' Convert a vector of date ranges into a data.frame 
 #'
 #' `MadDateRanges` returns a [`data.frame`] with 3 columns: `yearBegin`, 
-#' `yearEnd`, and `index` from the vector of `dateRanges` associated with 
+#' `yearEnd`, and `sourceNum` from the vector of `dateRanges` associated with 
 #' different sources in [`MaddisonSources`]. 
 #' 
 #' @param dateRanges character vector of date ranges, each associated with a 
@@ -10,7 +10,7 @@
 #' @returns a data.frame with 3 columns 
 #' \describe{
 #'   \item{yearBegin, yearEnd}{numeric years}
-#'   \item{index}{1, 2, 3, ... for the location in `dateRanges`}
+#'   \item{sourceNum}{1, 2, 3, ... for the location in `dateRanges`}
 #' }
 #' 
 #' @export
@@ -22,7 +22,7 @@
 #' data.frame(
 #' yearBegin=c(1,  700, 1252, 1820, 1870, 1913, 1950), 
 #' yearEnd  =c(1, 1500, 1700, 1820, 1870, 1913, 1950), 
-#' index    =c(1, 2, 3, rep(4, 4)))
+#' sourceNum=c(1, 2, 3, rep(4, 4)))
 #' 
 #' @keywords manip 
 MadDateRanges <- function(dateRanges){
@@ -31,9 +31,9 @@ MadDateRanges <- function(dateRanges){
   dateRng1 <- sapply(dateRng0, '[', 1)
   dateRngs <- strsplit(dateRng1, "[,&]")
   dtRngs <- data.frame(yearBegin=integer(0), yearEnd=integer(0), 
-                           index=integer(0))
+                       sourceNum=integer(0))
   for(i in 1:nSources){
-    Rngsi <- strsplit(dateRngs[[i]], "[-–]")
+    Rngsi <- strsplit(dateRngs[[i]], "[-\U2013]")
     nR <- length(Rngsi)
     for(iR in 1:nR){
       if(length(Rngsi[[iR]])>2){
@@ -44,7 +44,7 @@ MadDateRanges <- function(dateRanges){
       yrs <- rep(as.integer(Rngsi[[iR]]), length=2)
       dtRngs <- rbind(dtRngs, 
         data.frame(yearBegin=yrs[1], yearEnd=yrs[2], 
-                   index=i) 
+                   sourceNum=i) 
         ) 
     }
   }
