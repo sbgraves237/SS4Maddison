@@ -4,8 +4,9 @@
 #' The 
 #' \href{https://en.wikipedia.org/wiki/Maddison_Project}{Maddison project} 
 #' collates historical economic statistics from many sources. 
-#' `MaddisonSources` is a [`list`] of [`tibble`]s with `ISO` names giving the 
-#' sources of `GDP` per capita for different years for the said country. 
+#' `MaddisonSources` is a [`list`] of [`tibble::tibble`]s with `ISO` names 
+#' giving the sources of `GDP` per capita for different years for the said 
+#' country. 
 #'
 #' @format ## `MaddisonSources`
 #' A named list of [tibble::tibble]s, one for each country, named with the ISO country 
@@ -38,6 +39,7 @@
 #' @source <https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2020?lang=en>"Groningen Growth and Development Centre"
 "MaddisonSources"
 
+#' @rdname MaddisonSources
 #' @description
 #' The 
 #' \href{https://en.wikipedia.org/wiki/Maddison_Project}{Maddison project} 
@@ -66,7 +68,6 @@
 #' yearEnd  =c(1, 1700, 1870), 
 #' sourceNum=1:3
 #' )
-
 #' MaddisonSources[['EGY']][, 1, drop=TRUE] 
 #' # = c('1', '700 – 1500', '1820, 1870, 1913, 1950')
 #' MaddisonYears[MaddisonYears$ISO=='EGY', ] = 
