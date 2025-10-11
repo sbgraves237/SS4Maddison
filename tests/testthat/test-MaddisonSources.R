@@ -9,21 +9,24 @@ test_that("MaddisonSources", {
 })
 
 test_that("MaddisonYears", {
-  expect_equal(
-    MaddisonYears[MaddisonYears$ISO=='GBR', ], 
-    data.frame(
+
+  GBR <- MaddisonYears[MaddisonYears$ISO=='GBR', ] 
+  rownames(GBR) <- NULL 
+  GBRe <- data.frame(
       ISO=rep('GBR', 3), 
       yearBegin=c(1, 1252, 1700), 
       yearEnd  =c(1, 1700, 1870), 
       sourceNum=1:3
-    ) ) 
-    
-  expect_equal(
-    MaddisonYears[MaddisonYears$ISO=='EGY', ], 
-    data.frame(
+    ) 
+  expect_equal(GBR, GBRe) 
+
+  EGY <- MaddisonYears[MaddisonYears$ISO=='EGY', ] 
+  rownames(EGY) <- NULL 
+  EGYe <- data.frame(
       ISO=rep('EGY', 6), 
       yearBegin=c(1,  700, 1820, 1870, 1913, 1950), 
       yearEnd  =c(1, 1500, 1820, 1870, 1913, 1950), 
       sourceNum=c(1,    2, rep(3, 4))
-    ) )
+    ) 
+  expect_equal(EGY, EGYe) 
 })
