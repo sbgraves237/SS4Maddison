@@ -182,10 +182,10 @@ MaddisonSources <- vector('list', nISOsources)
 names(MaddisonSources) <- ISOsourceNms
 # Get year ranges for each country
 MaddisonYears <- data.frame(
-  ISO=character(0), 
+  ISO      =character(0), 
   yearBegin=integer(0), 
-  yearEnd=integer(0), 
-  index=integer(0)
+  yearEnd  =integer(0), 
+  sourceNum=integer(0)
   )
 for(i in 1:nISOsources){
   rowi <- (row1[i]+1):(row1[i+1]-2)
