@@ -11,7 +11,7 @@ MadDateRanges(dateRanges)
 different source.}
 }
 \value{
-a data.frame with 3 columns
+a \code{data.frame} with 3 columns
 \describe{
 \item{yearBegin, yearEnd}{numeric years}
 \item{sourceNum}{1, 2, 3, ... for the location in \code{dateRanges}}
