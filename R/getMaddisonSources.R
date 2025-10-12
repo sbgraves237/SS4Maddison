@@ -29,7 +29,14 @@
 #' @param years `data.frame` in the format of [`MaddisonYears`]; default is 
 #' `MaddisonYears`. 
 #' 
-#' @returns a data.frame in the format of [`MaddisonSources`].  
+#' @returns a [`tibble::tibble`] with 3 columns:
+#' \describe{
+#'   \item{ISO}{3-letter ISO code for country}
+#'   \item{years}{character vector of datas for `source`}
+#'   \item{source}{charcter vector of sources}
+#' }
+#' 
+#' in the format of [`MaddisonSources`].  
 #' 
 #' @export
 #'
