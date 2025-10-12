@@ -1,13 +1,13 @@
 #' Convert a vector of date ranges into a data.frame 
 #'
-#' `MadDateRanges` returns a [`data.frame`] with 3 columns: `yearBegin`, 
-#' `yearEnd`, and `sourceNum` from the vector of `dateRanges` associated with 
-#' different sources in [`MaddisonSources`]. 
+#' `MadDateRanges` returns a [`data.frame`] with 3 numeric columns: 
+#' `yearBegin`, `yearEnd`, and `sourceNum` from the vector of `dateRanges` 
+#' associated with different sources in [`MaddisonSources`]. 
 #' 
 #' @param dateRanges character vector of date ranges, each associated with a 
 #' different source. 
 #' 
-#' @returns a data.frame with 3 columns 
+#' @returns a `data.frame` with 3 columns 
 #' \describe{
 #'   \item{yearBegin, yearEnd}{numeric years}
 #'   \item{sourceNum}{1, 2, 3, ... for the location in `dateRanges`}
