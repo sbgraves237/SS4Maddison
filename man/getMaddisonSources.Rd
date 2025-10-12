@@ -28,7 +28,14 @@ default is \code{MaddisonSources}.}
 \code{MaddisonYears}.}
 }
 \value{
-a data.frame in the format of \code{\link{MaddisonSources}}.
+a \code{\link[tibble:tibble]{tibble::tibble}} with 3 columns:
+\describe{
+\item{ISO}{3-letter ISO code for country}
+\item{years}{character vector of datas for \code{source}}
+\item{source}{charcter vector of sources}
+}
+
+in the format of \code{\link{MaddisonSources}}.
 }
 \description{
 The
