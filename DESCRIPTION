@@ -1,5 +1,6 @@
 Package: SS4Maddison
-Title: State Space modeling using Maddison project data
+Title: State Space modeling using Maddison project data: DEPRECATED: See 
+MaddisonData
 Version: 0.0.1
 Date: 2025-10-12
 Authors@R: 
