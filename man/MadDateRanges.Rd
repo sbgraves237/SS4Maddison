@@ -18,9 +18,9 @@ a \code{data.frame} with 3 columns
 }
 }
 \description{
-\code{MadDateRanges} returns a \code{\link{data.frame}} with 3 columns: \code{yearBegin},
-\code{yearEnd}, and \code{sourceNum} from the vector of \code{dateRanges} associated with
-different sources in \code{\link{MaddisonSources}}.
+\code{MadDateRanges} returns a \code{\link{data.frame}} with 3 numeric columns:
+\code{yearBegin}, \code{yearEnd}, and \code{sourceNum} from the vector of \code{dateRanges}
+associated with different sources in \code{\link{MaddisonSources}}.
 }
 \examples{
 MadDateRanges(c('1', '700 – 1500', '1252–1700 (England)', 
