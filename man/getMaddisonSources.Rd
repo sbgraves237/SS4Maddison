@@ -20,6 +20,12 @@ the first column being the ISO codes followed by \code{yearBegin} and optionally
 \item{plot}{if TRUE: Return all relevant \code{MaddisonSources}. If FALSE,
 returns all sources in \code{ISO} only if there are less than a dozen; return a
 citation for the Maddison Project Database. Default = TRUE.}
+
+\item{sources}{list of sources in the format of \code{\link{MaddisonSources}};
+default is \code{MaddisonSources}.}
+
+\item{years}{\code{data.frame} in the format of \code{\link{MaddisonYears}}; default is
+\code{MaddisonYears}.}
 }
 \value{
 a data.frame in the format of \code{\link{MaddisonSources}}.
