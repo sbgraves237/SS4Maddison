@@ -24,6 +24,10 @@
 #' @param plot if TRUE: Return all relevant `MaddisonSources`. If FALSE, 
 #' returns all sources in `ISO` only if there are less than a dozen; return a 
 #' citation for the Maddison Project Database. Default = TRUE. 
+#' @param sources list of sources in the format of [`MaddisonSources`]; 
+#' default is `MaddisonSources`. 
+#' @param years `data.frame` in the format of [`MaddisonYears`]; default is 
+#' `MaddisonYears`. 
 #' 
 #' @returns a data.frame in the format of [`MaddisonSources`].  
 #' 
